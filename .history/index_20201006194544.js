@@ -77,36 +77,20 @@ app.get('/loginUserInformation',(req,res)=>{
         const idToken = bearer.split(' ')[1];
         admin.auth().verifyIdToken(idToken)
          .then((decodedToken) =>{
-            let tokenEmail = decodedToken.email;
-             if(tokenEmail == req.query.email){
-               volunteersCollection.find({email:req.query.email})
-               .toArray((err,documents)=>{
-                  res.status(200).send(documents);
-               })
-             }
+            let uid = decodedToken.uid;
+         
          }).catch((error) =>{
-            res.status(401).send('Un authorized access')
+            
          });
-     }
-     else{
-        res.status(401).send('Un authorized access')
+
      }
 
+     volunteersCollection.find({email:req.query.email})
+     .toArray((err,documents)=>{
+        res.send(documents);
+     })
 })
 
-app.delete('/delete/:id',(req, res)=>{
-     const id = req.params.id;
-     volunteersCollection.deleteOne({_id : ObjectId(req.params.id)})
-     .then(result => {
-         res.send(result.deletedCount > 0);
-     });
-})
-
- app.get('/allVolunteersNetwork',(req,res)=>{
-   volunteersCollection.find({}).toArray((err,documents)=>{
-      res.send(documents);
-  })
- })
 
 })
 

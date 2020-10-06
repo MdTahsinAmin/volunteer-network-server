@@ -25,7 +25,10 @@ app.get('/', (req, res) => {
 
 // firebase admin
 
-const  serviceAccount = require("./volunteer-network-e6d35-firebase-adminsdk-s5b87-b5d4226ee2");
+
+const  admin = require("firebase-admin");
+
+const  serviceAccount = require("path/to/serviceAccountKey.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -71,42 +74,13 @@ app.post('/newVolunteer',(req,res)=>{
 
 
 app.get('/loginUserInformation',(req,res)=>{
-     const bearer = req.headers.authorization
-      
-     if(bearer && bearer.startsWith('Bearer ')){
-        const idToken = bearer.split(' ')[1];
-        admin.auth().verifyIdToken(idToken)
-         .then((decodedToken) =>{
-            let tokenEmail = decodedToken.email;
-             if(tokenEmail == req.query.email){
-               volunteersCollection.find({email:req.query.email})
-               .toArray((err,documents)=>{
-                  res.status(200).send(documents);
-               })
-             }
-         }).catch((error) =>{
-            res.status(401).send('Un authorized access')
-         });
-     }
-     else{
-        res.status(401).send('Un authorized access')
-     }
-
+    console.log(req.headers.authorization);
+     volunteersCollection.find({email:req.query.email})
+     .toArray((err,documents)=>{
+        res.send(documents);
+     })
 })
 
-app.delete('/delete/:id',(req, res)=>{
-     const id = req.params.id;
-     volunteersCollection.deleteOne({_id : ObjectId(req.params.id)})
-     .then(result => {
-         res.send(result.deletedCount > 0);
-     });
-})
-
- app.get('/allVolunteersNetwork',(req,res)=>{
-   volunteersCollection.find({}).toArray((err,documents)=>{
-      res.send(documents);
-  })
- })
 
 })
 

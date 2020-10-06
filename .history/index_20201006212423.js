@@ -102,11 +102,6 @@ app.delete('/delete/:id',(req, res)=>{
      });
 })
 
- app.get('/allVolunteersNetwork',(req,res)=>{
-   volunteersCollection.find({}).toArray((err,documents)=>{
-      res.send(documents);
-  })
- })
 
 })
 

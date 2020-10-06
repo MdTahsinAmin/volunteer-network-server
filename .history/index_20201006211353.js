@@ -96,17 +96,12 @@ app.get('/loginUserInformation',(req,res)=>{
 
 app.delete('/delete/:id',(req, res)=>{
      const id = req.params.id;
-     volunteersCollection.deleteOne({_id : ObjectId(req.params.id)})
+     volunteersCollection.deleteOne({_id:ObjectId(id)})
      .then(result => {
          res.send(result.deletedCount > 0);
      });
 })
 
- app.get('/allVolunteersNetwork',(req,res)=>{
-   volunteersCollection.find({}).toArray((err,documents)=>{
-      res.send(documents);
-  })
- })
 
 })
 

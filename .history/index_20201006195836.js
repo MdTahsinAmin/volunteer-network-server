@@ -81,32 +81,16 @@ app.get('/loginUserInformation',(req,res)=>{
              if(tokenEmail == req.query.email){
                volunteersCollection.find({email:req.query.email})
                .toArray((err,documents)=>{
-                  res.status(200).send(documents);
+                  res.send(documents);
                })
              }
          }).catch((error) =>{
-            res.status(401).send('Un authorized access')
+            
          });
      }
-     else{
-        res.status(401).send('Un authorized access')
-     }
 
 })
 
-app.delete('/delete/:id',(req, res)=>{
-     const id = req.params.id;
-     volunteersCollection.deleteOne({_id : ObjectId(req.params.id)})
-     .then(result => {
-         res.send(result.deletedCount > 0);
-     });
-})
-
- app.get('/allVolunteersNetwork',(req,res)=>{
-   volunteersCollection.find({}).toArray((err,documents)=>{
-      res.send(documents);
-  })
- })
 
 })
 
